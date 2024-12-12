@@ -1,3 +1,25 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "commitMessagePrefix": "renovate:",
+  "customManagers": [{
+    "customType": "regex",
+    "fileMatch": ["^Dockerfile$"],
+    "matchStrings": [
+      "#\\s*renovate:\\s*?(release=(?<release>.*?))?\\s*depName=(?<depName>.*?)?\\sENV .*?_VERSION=(?<currentValue>.*)"
+    ],
+    "registryUrlTemplate": "https://deb.debian.org/debian?suite=stable&components=main&binaryArch=amd64",
+    "datasourceTemplate": "deb"
+  }, {
+    "customType": "regex",
+    "datasourceTemplate": "github-releases",
+    "depNameTemplate": "Prowlarr/Prowlarr",
+    "extractVersionTemplate": "^v(?<version>.*)$",
+    "fileMatch": [
+      "^.gitlab-ci\\.ya?ml$"
+    ],
+    "matchStrings": [
+      "VERSION: \"(?<currentValue>\\d+\\.\\d+\\.\\d+\\.\\d+)\""
+    ],
+    "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$"
+  }]
 }

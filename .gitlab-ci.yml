@@ -1,16 +1,16 @@
 variables:
   DOCKER_HUB_IMAGE: "${DOCKER_HUB_USERNAME}/${CI_PROJECT_NAME}"
-  VERSION: "${CI_COMMIT_TAG}"
+  VERSION: "1.25.4.4818"
 
 stages:
 - build
 
 kaniko:
   image:
-    name: gcr.io/kaniko-project/executor:debug
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
     entrypoint: [""]
   rules:
-  - if: $CI_COMMIT_TAG
+  - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   script:
   - mkdir --parents /kaniko/.docker
   - |
@@ -26,9 +26,9 @@ kaniko:
         }
       }
     }" > /kaniko/.docker/config.json
-  - /kaniko/executor --build-arg="VERSION=${VERSION}" --context="${CI_PROJECT_DIR}" --destination="${CI_REGISTRY_IMAGE}:${VERSION}" --destination="${DOCKER_HUB_IMAGE}:${VERSION}" --dockerfile="${CI_PROJECT_DIR}/Dockerfile"
-  - echo "Successfully publised new image ${CI_REGISTRY_IMAGE}:${VERSION}"
-  - echo "Successfully publised new image ${DOCKER_HUB_IMAGE}:${VERSION}"
+  - /kaniko/executor --build-arg="VERSION=${VERSION}" --context="${CI_PROJECT_DIR}" --destination="${CI_REGISTRY_IMAGE}:${VERSION}-${CI_PIPELINE_IID}" --destination="${DOCKER_HUB_IMAGE}:${VERSION}-${CI_PIPELINE_IID}" --dockerfile="${CI_PROJECT_DIR}/Dockerfile"
+  - echo "Successfully published new image ${CI_REGISTRY_IMAGE}:${VERSION}-${CI_PIPELINE_IID}"
+  - echo "Successfully published new image ${DOCKER_HUB_IMAGE}:${VERSION}-${CI_PIPELINE_IID}"
   stage: build
   tags:
   - kubernetes

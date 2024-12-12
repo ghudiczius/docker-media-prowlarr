@@ -2,8 +2,15 @@ FROM mcr.microsoft.com/dotnet/runtime:6.0
 
 ARG VERSION
 
+# renovate: release=bullseye depName=curl
+ENV CURL_VERSION=7.88.1-10+deb12u8
+# renovate: release=bullseye depName=libsqlite3-0
+ENV LIBSQLITE3_VERSION=3.40.1-2+deb12u1
+
 RUN apt-get update && \
-    apt-get --assume-yes install curl libsqlite3-0 && \
+    apt-get --assume-yes install \
+        curl="${CURL_VERSION}" \
+        libsqlite3-0="${LIBSQLITE3_VERSION}" && \
     groupadd --gid=1000 prowlarr && \
     useradd --gid=1000 --home-dir=/opt/prowlarr --no-create-home --shell /bin/bash --uid 1000 prowlarr && \
     mkdir /config /opt/prowlarr && \
