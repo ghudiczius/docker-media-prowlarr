@@ -8,7 +8,7 @@ ENV CURL_VERSION=7.88.1-10+deb12u8
 ENV LIBSQLITE3_VERSION=3.40.1-2+deb12u1
 
 RUN apt-get update && \
-    apt-get --assume-yes install \
+    apt-get --assume-yes --quiet install \
         curl="${CURL_VERSION}" \
         libsqlite3-0="${LIBSQLITE3_VERSION}" && \
     groupadd --gid=1000 prowlarr && \
