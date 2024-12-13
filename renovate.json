@@ -21,5 +21,22 @@
       "VERSION: \"(?<currentValue>\\d+\\.\\d+\\.\\d+\\.\\d+)\""
     ],
     "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$"
+  }],
+  "packageRules": [{
+    "autoApprove": true,
+    "matchUpdateTypes": [
+      "major"
+    ]
+  }, {
+    "automerge": true,
+    "matchUpdateTypes": [
+      "minor"
+    ]
+  }, {
+    "automerge": true,
+    "automergeType": "branch",
+    "matchUpdateTypes": [
+      "patch"
+    ]
   }]
 }
