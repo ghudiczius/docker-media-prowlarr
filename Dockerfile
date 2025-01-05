@@ -25,4 +25,5 @@ VOLUME /config
 WORKDIR /opt/prowlarr
 
 EXPOSE 9696
-CMD ["/opt/prowlarr/Prowlarr", "-data=/config", "-nobrowser"]
+ENTRYPOINT ["/opt/prowlarr/Prowlarr"]
+CMD ["-data=/config", "-nobrowser"]
