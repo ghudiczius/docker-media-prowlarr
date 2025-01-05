@@ -3,14 +3,14 @@
   "commitMessagePrefix": "renovate:",
   "customManagers": [{
     "customType": "regex",
+    "datasourceTemplate": "deb",
     "fileMatch": [
       "^Dockerfile$"
     ],
     "matchStrings": [
       "#\\s*renovate:\\s*?(release=(?<release>.*?))?\\s*depName=(?<depName>.*?)?\\sENV .*?_VERSION=(?<currentValue>.*)"
     ],
-    "registryUrlTemplate": "https://deb.debian.org/debian?suite=stable&components=main&binaryArch=amd64",
-    "datasourceTemplate": "deb"
+    "registryUrlTemplate": "https://deb.debian.org/debian?suite=stable&components=main&binaryArch=amd64"
   }, {
     "customType": "regex",
     "datasourceTemplate": "github-releases",
@@ -20,7 +20,7 @@
       "^.gitlab-ci\\.ya?ml$"
     ],
     "matchStrings": [
-      "VERSION: \"(?<currentValue>\\d+\\.\\d+\\.\\d+\\.\\d+)\""
+      "VERSION: \"(?<currentValue>.*)\""
     ],
     "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$"
   }],
@@ -40,5 +40,14 @@
     "matchUpdateTypes": [
       "patch"
     ]
+  }, {
+    "ignoreUnstable": false,
+    "matchPackageNames": [
+      "Prowlarr/Prowlarr"
+    ],
+    "separateMajorMinor": true,
+    "separateMinorPatch": true,
+    "separateMultipleMajor": true,
+    "separateMultipleMinor": true
   }]
 }

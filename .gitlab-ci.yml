@@ -2,23 +2,51 @@ variables:
   DOCKER_HUB_IMAGE: "${DOCKER_HUB_USERNAME}/${CI_PROJECT_NAME}"
   VERSION: "1.28.2.4885"
 
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
 stages:
+- prepare
 - test
 - build
 
+source-check:
+  artifacts:
+    reports:
+      dotenv: source.env
+  image:
+    name: curlimages/curl:8.11.1
+    entrypoint:
+    - /bin/sh
+  script:
+  - master=$(curl --head --output /dev/null --silent --write-out "%{http_code}" "https://github.com/Prowlarr/Prowlarr/releases/download/v${VERSION}/Prowlarr.master.${VERSION}.linux-core-x64.tar.gz")
+  - test "${master}" == "404" && echo "SOURCE_CHANNEL=develop" >> source.env || echo "SOURCE_CHANNEL=master" >> source.env
+  - test "${master}" == "404" && echo "IMAGE_SUFFIX=-pre" >> source.env || echo "IMAGE_SUFFIX=" >> source.env
+  stage: prepare
+  tags:
+  - kubernetes
+
 kaniko-check:
+  dependencies:
+  - source-check
   image:
     name: gcr.io/kaniko-project/executor:v1.23.2-debug
     entrypoint: [""]
   rules:
   - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
   script:
-  - /kaniko/executor --build-arg="VERSION=${VERSION}" --context="${CI_PROJECT_DIR}" --dockerfile="${CI_PROJECT_DIR}/Dockerfile" --no-push
+  - /kaniko/executor --build-arg="SOURCE_CHANNEL=${SOURCE_CHANNEL}" --build-arg="VERSION=${VERSION}" --context="${CI_PROJECT_DIR}" --dockerfile="${CI_PROJECT_DIR}/Dockerfile" --no-push
   stage: test
   tags:
   - kubernetes
 
 kaniko:
+  dependencies:
+  - source-check
   image:
     name: gcr.io/kaniko-project/executor:v1.23.2-debug
     entrypoint: [""]
@@ -39,9 +67,9 @@ kaniko:
         }
       }
     }" > /kaniko/.docker/config.json
-  - /kaniko/executor --build-arg="VERSION=${VERSION}" --context="${CI_PROJECT_DIR}" --destination="${CI_REGISTRY_IMAGE}:${VERSION}-${CI_PIPELINE_IID}" --destination="${DOCKER_HUB_IMAGE}:${VERSION}-${CI_PIPELINE_IID}" --dockerfile="${CI_PROJECT_DIR}/Dockerfile"
-  - echo "Successfully published new image ${CI_REGISTRY_IMAGE}:${VERSION}-${CI_PIPELINE_IID}"
-  - echo "Successfully published new image ${DOCKER_HUB_IMAGE}:${VERSION}-${CI_PIPELINE_IID}"
+  - /kaniko/executor --build-arg="SOURCE_CHANNEL=${SOURCE_CHANNEL}" --build-arg="VERSION=${VERSION}" --context="${CI_PROJECT_DIR}" --destination="${CI_REGISTRY_IMAGE}:${VERSION}.${CI_PIPELINE_IID}${IMAGE_SUFFIX}" --destination="${DOCKER_HUB_IMAGE}:${VERSION}.${CI_PIPELINE_IID}${IMAGE_SUFFIX}" --dockerfile="${CI_PROJECT_DIR}/Dockerfile"
+  - echo "Successfully published new image ${CI_REGISTRY_IMAGE}:${VERSION}.${CI_PIPELINE_IID}${IMAGE_SUFFIX}"
+  - echo "Successfully published new image ${DOCKER_HUB_IMAGE}:${VERSION}.${CI_PIPELINE_IID}${IMAGE_SUFFIX}"
   stage: build
   tags:
   - kubernetes

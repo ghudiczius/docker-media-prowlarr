@@ -1,5 +1,6 @@
 FROM mcr.microsoft.com/dotnet/runtime:9.0
 
+ARG SOURCE_CHANNEL
 ARG VERSION
 
 # renovate: release=bookworm depName=curl
@@ -14,7 +15,7 @@ RUN apt-get update && \
     groupadd --gid=1000 prowlarr && \
     useradd --gid=1000 --home-dir=/opt/prowlarr --no-create-home --shell /bin/bash --uid 1000 prowlarr && \
     mkdir /config /opt/prowlarr && \
-    curl --location --output /tmp/prowlarr.tar.gz "https://github.com/prowlarr/prowlarr/releases/download/v${VERSION}/prowlarr.master.${VERSION}.linux-core-x64.tar.gz" && \
+    curl --location --output /tmp/prowlarr.tar.gz "https://github.com/Prowlarr/Prowlarr/releases/download/v${VERSION}/Prowlarr.${SOURCE_CHANNEL}.${VERSION}.linux-core-x64.tar.gz" && \
     tar xzf /tmp/prowlarr.tar.gz --directory=/opt/prowlarr --strip-components=1 && \
     chown --recursive 1000:1000 /config /opt/prowlarr && \
     rm /tmp/prowlarr.tar.gz
