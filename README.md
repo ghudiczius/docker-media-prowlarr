@@ -5,7 +5,7 @@ Simple docker image for Prowlarr without any bloat, built on the official dotnet
 ## Usage
 
 ```sh
-docker run --rm registry.gitlab.jmk.hu/media/prowlarr:<VERSION> \
+docker run --rm ghudiczius/prowlarr:<VERSION> \
   -p 9696:9696 \
   -v path/to/config:/config
 ```
@@ -13,7 +13,7 @@ docker run --rm registry.gitlab.jmk.hu/media/prowlarr:<VERSION> \
 or
 
 ```sh
-docker run --rm ghudiczius/prowlarr:<VERSION> \
+docker run --rm registry.gitlab.jmk.hu/media/prowlarr:<VERSION> \
   -p 9696:9696 \
   -v path/to/config:/config
 ```
