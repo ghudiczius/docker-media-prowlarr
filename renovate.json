@@ -10,7 +10,7 @@
     "matchStrings": [
       "#\\s*renovate:\\s*?(release=(?<release>.*?))?\\s*depName=(?<depName>.*?)?\\sENV .*?_VERSION=(?<currentValue>.*)"
     ],
-    "registryUrlTemplate": "https://deb.debian.org/debian?suite=stable&components=main&binaryArch=amd64"
+    "registryUrlTemplate": "https://deb.debian.org/debian?{{#if release }}release={{release}}{{else}}suite=stable{{/if}}&components=main&binaryArch=amd64"
   }, {
     "customType": "regex",
     "datasourceTemplate": "github-releases",

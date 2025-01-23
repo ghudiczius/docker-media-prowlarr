@@ -42,6 +42,8 @@ kaniko-check:
   - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
   script:
   - /kaniko/executor --build-arg="SOURCE_CHANNEL=${SOURCE_CHANNEL}" --build-arg="VERSION=${VERSION}" --context="${CI_PROJECT_DIR}" --dockerfile="${CI_PROJECT_DIR}/Dockerfile" --no-push
+  - echo "Would publish new image ${CI_REGISTRY_IMAGE}:${VERSION}.${CI_PIPELINE_IID}${IMAGE_SUFFIX}"
+  - echo "Would publish new image ${DOCKER_HUB_IMAGE}:${VERSION}.${CI_PIPELINE_IID}${IMAGE_SUFFIX}"
   stage: test
   tags:
   - kubernetes
