@@ -1,7 +1,7 @@
 ---
 variables:
   DOCKER_HUB_IMAGE: "${DOCKER_HUB_USERNAME}/${CI_PROJECT_NAME}"
-  VERSION: "1.30.2.4939"
+  VERSION: "1.31.0.4941"
 
 workflow:
   rules:
