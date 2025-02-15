@@ -79,7 +79,7 @@ kaniko:
   - kubernetes
 
 docker-hub:
-  image: alpine/curl:8.12.0
+  image: alpine/curl:8.12.1
   rules:
   - changes:
     - README.md
