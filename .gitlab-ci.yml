@@ -36,7 +36,7 @@ kaniko-check:
   dependencies:
   - source-check
   image:
-    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    name: gcr.io/kaniko-project/executor:v1.24.0-debug
     entrypoint: [""]
   rules:
   - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
@@ -52,7 +52,7 @@ kaniko:
   dependencies:
   - source-check
   image:
-    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    name: gcr.io/kaniko-project/executor:v1.24.0-debug
     entrypoint: [""]
   rules:
   - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
