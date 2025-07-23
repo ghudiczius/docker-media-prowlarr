@@ -21,7 +21,7 @@ source-check:
     reports:
       dotenv: source.env
   image:
-    name: curlimages/curl:8.14.1
+    name: curlimages/curl:8.15.0
     entrypoint:
     - /bin/sh
   script:
