@@ -3,14 +3,13 @@
   "commitMessagePrefix": "renovate:",
   "customManagers": [{
     "customType": "regex",
-    "datasourceTemplate": "deb",
+    "datasourceTemplate": "repology",
     "fileMatch": [
       "^Dockerfile$"
     ],
     "matchStrings": [
-      "#\\s*renovate:\\s*?(release=(?<release>.*?))?\\s*depName=(?<depName>.*?)?\\sENV .*?_VERSION=(?<currentValue>.*)"
-    ],
-    "registryUrlTemplate": "https://deb.debian.org/debian?{{#if release }}release={{release}}{{else}}suite=stable{{/if}}&components=main&binaryArch=amd64"
+      "#\\s*renovate:\\s*datasource=repology\\s*depName=(?<depName>alpine.*?)\\s*versioning=(?<versioning>.*?)\\s*.*?_VERSION:\\s*\"(?<currentValue>.*)\""
+    ]
   }, {
     "customType": "regex",
     "datasourceTemplate": "github-releases",
