@@ -5,11 +5,14 @@ ARG VERSION
 
 # renovate: datasource=repology depName=alpine_3_22/curl versioning=loose
 ENV CURL_VERSION=8.14.1-r1
+# renovate: datasource=repology depName=alpine_3_22/icu-libs versioning=loose
+ENV ICU_LIBS_VERSION=76.1-r1
 # renovate: datasource=repology depName=alpine_3_22/sqlite-libs versioning=loose
 ENV SQLITE_LIBS_VERSION=3.49.2-r1
 
 RUN apk add --no-cache --update \
         curl="${CURL_VERSION}" \
+        icu-libs="${ICU_LIBS_VERSION}" \
         sqlite-libs="${SQLITE_LIBS_VERSION}" && \
     addgroup -g 1000 prowlarr && \
     adduser -D -G prowlarr -h /opt/prowlarr -H -s /bin/sh -u 1000 prowlarr && \
